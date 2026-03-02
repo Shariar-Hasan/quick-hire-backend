@@ -41,7 +41,7 @@ export const jobService = {
                 skip,
                 take: Number(limit),
                 orderBy: { created_at: 'desc' },
-                include: { _count: { select: { applications: true } } },
+                include: { _count: { select: { applications: true } }, company: true, location: true },
             }),
             prisma.job.count({ where: { deleted_at: null } }),
         ]);
