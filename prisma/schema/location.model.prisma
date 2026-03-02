@@ -7,6 +7,7 @@ model Location {
 
   // Relations
   companies Company[]
+  jobs      Job[]
 
   // Audit
   created_at DateTime  @default(now())

@@ -13,7 +13,6 @@ model Job {
   salary_max Float?
   currency   String?
 
-  // Plain text location string (e.g. "Dhaka, Bangladesh")
   location String?
 
   is_featured Boolean   @default(false)
@@ -25,6 +24,9 @@ model Job {
 
   company_id Int?
   company    Company? @relation(fields: [company_id], references: [id])
+
+  location_id  Int?
+  location_ref Location? @relation(fields: [location_id], references: [id])
 
   applications Application[]
 
