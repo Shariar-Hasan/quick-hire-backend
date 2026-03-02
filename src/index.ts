@@ -17,8 +17,8 @@ app.use(cors());
 app.use(express.json());
 
 // ── Routes ─────────────────────────────────────
-app.get("/", (req, res) => {
-    res.json({ message: "Server is running" });
+app.get("/health", (req, res) => {
+    res.json({ message: "Server is health is okay" });
 });
 
 app.use("/api/user", userRouter);
