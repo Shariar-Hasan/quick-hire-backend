@@ -59,6 +59,15 @@ export const companyController = {
             res.status(500).json({ success: false, message: error.message });
         }
     },
+
+    findAllForDropDown: async (req: Request, res: Response) => {
+        try {
+            const data = await companyService.findAllForDropDown();
+            res.json({ success: true, message: 'Companies fetched', data });
+        } catch (error: any) {
+            res.status(500).json({ success: false, message: error.message });
+        }
+    },
 };
 
 

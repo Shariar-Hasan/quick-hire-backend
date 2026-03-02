@@ -14,24 +14,22 @@ declare global {
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
 
-    /* ── REAL AUTH (implement later) ───────────────────────────────────────
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        res.status(401).json({ success: false, message: 'Unauthorized' });
-        return;
-    }
+    // const authHeader = req.headers.authorization;
+    // if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    //     res.status(401).json({ success: false, message: 'Unauthorized' });
+    //     return;
+    // }
 
-    const token = authHeader.split(' ')[1];
-    try {
-        const payload = jwt.verify(token, process.env.JWT_SECRET!) as { id: number; role: string };
-        req.user = { id: payload.id, role: payload.role };
-        next();
-    } catch {
-        res.status(401).json({ success: false, message: 'Invalid token' });
-    }
-    ─────────────────────────────────────────────────────────────────────── */
+    // const token = authHeader.split(' ')[1];
+    // try {
+    //     const payload = jwt.verify(token, process.env.JWT_SECRET!) as { id: number; role: string };
+    //     req.user = { id: payload.id, role: payload.role };
+    //     next();
+    // } catch {
+    //     res.status(401).json({ success: false, message: 'Invalid token' });
+    // }
 
-    // ── BYPASSED: inject a demo user (remove once real auth is ready) ──
+
     req.user = { id: 1, role: 'EMPLOYER' };
     next();
 };

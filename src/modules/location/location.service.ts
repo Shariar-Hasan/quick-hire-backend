@@ -40,4 +40,13 @@ export const locationService = {
     remove: async (id: number) => {
         return prisma.location.update({ where: { id }, data: { deleted_at: new Date() } });
     },
+
+    findAllForDropDown: async () => {
+        const data = await prisma.location.findMany({
+            where: { deleted_at: null },
+            select: { id: true, city: true, country: true },
+            orderBy: { city: 'asc' },
+        });
+        return data.map(l => ({ id: l.id, label: `${l.city}, ${l.country}` }));
+    },
 };

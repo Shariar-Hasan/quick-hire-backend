@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { jobController } from './job.controller';
 import { authMiddleware } from '../../middlewares/auth.middleware';
+import { middleware } from '../../middlewares/base.middleware';
 
 const router = Router();
 
@@ -13,9 +14,9 @@ router.get('/', jobController.findAll);
 router.get('/:id', jobController.findOne);
 
 // Protected
-router.post('/', authMiddleware, jobController.create);
-router.patch('/:id', authMiddleware, jobController.update);
-router.delete('/:id', authMiddleware, jobController.remove);
+router.post('/', middleware.auth, jobController.create);
+router.patch('/:id', middleware.auth, jobController.update);
+router.delete('/:id', middleware.auth, jobController.remove);
 
 export default router;
 

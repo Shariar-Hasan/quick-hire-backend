@@ -51,4 +51,13 @@ export const companyService = {
     remove: async (id: number) => {
         return prisma.company.update({ where: { id }, data: { deleted_at: new Date() } });
     },
+
+    findAllForDropDown: async () => {
+        const data = await prisma.company.findMany({
+            where: { deleted_at: null },
+            select: { id: true, name: true },
+            orderBy: { name: 'asc' },
+        });
+        return data.map(c => ({ id: c.id, label: c.name }));
+    },
 };

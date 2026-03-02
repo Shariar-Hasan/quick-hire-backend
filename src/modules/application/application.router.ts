@@ -1,16 +1,16 @@
 import { Router } from 'express';
 import { applicationController } from './application.controller';
-import { authMiddleware } from '../../middlewares/auth.middleware';
+import { middleware } from '../../middlewares/base.middleware';
 
 const router = Router();
 
 // Protected
-router.get('/', authMiddleware, applicationController.findAll);
-router.get('/job/:jobId', authMiddleware, applicationController.findByJob);
-router.get('/:id', authMiddleware, applicationController.findOne);
+router.get('/', middleware.auth, applicationController.findAll);
+router.get('/job/:jobId', middleware.auth, applicationController.findByJob);
+router.get('/:id', middleware.auth, applicationController.findOne);
 router.post('/', applicationController.create);              // Public: submit application
-router.patch('/:id/status', authMiddleware, applicationController.updateStatus);
-router.patch('/:id', authMiddleware, applicationController.update);
-router.delete('/:id', authMiddleware, applicationController.remove);
+router.patch('/:id/status', middleware.auth, applicationController.updateStatus);
+router.patch('/:id', middleware.auth, applicationController.update);
+router.delete('/:id', middleware.auth, applicationController.remove);
 
 export default router;
