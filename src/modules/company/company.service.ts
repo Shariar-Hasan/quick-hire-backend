@@ -45,7 +45,15 @@ export const companyService = {
     },
 
     update: async (id: number, data: any) => {
-        return prisma.company.update({ where: { id }, data });
+        const { location_id, employer_id, ...rest } = data;
+        return prisma.company.update({
+            where: { id },
+            data: {
+                ...rest,
+                ...(location_id != null && { location: { connect: { id: location_id } } }),
+                ...(employer_id != null && { employer: { connect: { id: employer_id } } }),
+            },
+        });
     },
 
     remove: async (id: number) => {

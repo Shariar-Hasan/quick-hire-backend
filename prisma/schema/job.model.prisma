@@ -13,8 +13,6 @@ model Job {
   salary_max Float?
   currency   String?
 
-  location String?
-
   is_featured Boolean   @default(false)
   expires_at  DateTime?
 
@@ -25,8 +23,8 @@ model Job {
   company_id Int?
   company    Company? @relation(fields: [company_id], references: [id])
 
-  location_id  Int?
-  location_ref Location? @relation(fields: [location_id], references: [id])
+  location_id Int?
+  location    Location? @relation(fields: [location_id], references: [id])
 
   applications Application[]
 

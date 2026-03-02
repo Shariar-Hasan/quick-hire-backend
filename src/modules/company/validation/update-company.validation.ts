@@ -6,7 +6,7 @@ export const updateCompanySchema = z.object({
     name: z.string().min(1).optional(),
     description: z.string().optional(),
     website: z.string().url('Must be a valid URL').optional(),
-    logo_url: z.string().url('Must be a valid URL').optional(),
+    logo_url: z.string().optional(),
     industry: z.string().optional(),
     size: CompanySizeEnum.optional(),
     location_id: z.coerce.number().int().positive().optional(),

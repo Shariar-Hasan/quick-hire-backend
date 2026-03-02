@@ -14,7 +14,6 @@ export const createJobSchema = z
 
         company_id: z.coerce.number().int().positive().optional(),
         location_id: z.coerce.number().int().positive().optional(),
-        location: z.string().optional(),
 
         salary_min: z.coerce.number().positive().optional(),
         salary_max: z.coerce.number().positive().optional(),
