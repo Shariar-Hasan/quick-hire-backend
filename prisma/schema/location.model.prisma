@@ -1,0 +1,20 @@
+model Location {
+  id       Int     @id @default(autoincrement())
+  city     String
+  state    String?
+  country  String
+  zip_code String?
+
+  // Relations
+  companies Company[]
+
+  // Audit
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime?
+
+  created_by Int?
+  updated_by Int?
+
+  @@map("locations")
+}

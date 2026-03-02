@@ -1,0 +1,25 @@
+model Application {
+  id Int @id @default(autoincrement())
+
+  applicant_name  String
+  applicant_email String
+  resume_url      String
+  cover_letter    String?
+
+  status     ApplicationStatus @default(APPLIED)
+  applied_at DateTime          @default(now())
+
+  // Relations
+  job_id Int
+  job    Job @relation(fields: [job_id], references: [id])
+
+  // Audit
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime?
+
+  created_by Int?
+  updated_by Int?
+
+  @@map("applications")
+}

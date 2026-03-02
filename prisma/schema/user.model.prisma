@@ -1,0 +1,22 @@
+model User {
+  id            Int    @id @default(autoincrement())
+  name          String
+  email         String @unique
+  password_hash String
+
+  role UserRole @default(EMPLOYER)
+
+  // Relations
+  jobs    Job[]
+  company Company?
+
+  // Audit
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime?
+
+  created_by Int?
+  updated_by Int?
+
+  @@map("users")
+}

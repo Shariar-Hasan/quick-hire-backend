@@ -1,0 +1,38 @@
+enum UserRole {
+  EMPLOYER
+  ADMIN
+}
+
+enum CompanySize {
+  STARTUP    // 1-10
+  SMALL      // 11-50
+  MEDIUM     // 51-200
+  LARGE      // 201-1000
+  ENTERPRISE // 1000+
+}
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+}
+
+enum RemoteType {
+  ONSITE
+  REMOTE
+  HYBRID
+}
+
+enum JobStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+}
+
+enum ApplicationStatus {
+  APPLIED
+  SHORTLISTED
+  REJECTED
+  HIRED
+}

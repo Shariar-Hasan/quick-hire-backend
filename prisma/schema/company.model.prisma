@@ -1,0 +1,28 @@
+model Company {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String?
+  website     String?
+  logo_url    String?
+  industry    String?
+  size        CompanySize?
+
+  // Relations
+  employer_id Int  @unique
+  employer    User @relation(fields: [employer_id], references: [id])
+
+  location_id Int?
+  location    Location? @relation(fields: [location_id], references: [id])
+
+  jobs Job[]
+
+  // Audit
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime?
+
+  created_by Int?
+  updated_by Int?
+
+  @@map("companies")
+}

@@ -1,0 +1,40 @@
+model Job {
+  id     Int    @id @default(autoincrement())
+  job_id String @unique @default(cuid())
+
+  title       String
+  description String
+
+  job_type    JobType
+  remote_type RemoteType?
+  status      JobStatus   @default(DRAFT)
+
+  salary_min Float?
+  salary_max Float?
+  currency   String?
+
+  // Plain text location string (e.g. "Dhaka, Bangladesh")
+  location String?
+
+  is_featured Boolean   @default(false)
+  expires_at  DateTime?
+
+  // Relations
+  employer_id Int
+  employer    User @relation(fields: [employer_id], references: [id])
+
+  company_id Int?
+  company    Company? @relation(fields: [company_id], references: [id])
+
+  applications Application[]
+
+  // Audit
+  created_at DateTime  @default(now())
+  updated_at DateTime? @updatedAt
+  deleted_at DateTime?
+
+  created_by Int?
+  updated_by Int?
+
+  @@map("jobs")
+}
