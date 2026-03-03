@@ -9,7 +9,13 @@ export const categoryService = {
         if (search) where.name = { contains: search, mode: 'insensitive' };
 
         const [data, total] = await Promise.all([
-            prisma.category.findMany({ where, skip, take: Number(limit), orderBy: { name: 'asc' } }),
+            prisma.category.findMany({
+                where,
+                skip,
+                take: Number(limit),
+                orderBy: { name: 'asc' },
+                include: { _count: { select: { jobs: true } } },
+            }),
             prisma.category.count({ where }),
         ]);
 

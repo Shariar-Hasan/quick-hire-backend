@@ -72,6 +72,15 @@ export const jobController = {
             res.status(500).json({ success: false, message: error.message });
         }
     },
+
+    getAnalytics: async (req: Request, res: Response) => {
+        try {
+            const data = await jobService.getAnalytics();
+            res.json({ success: true, message: 'Analytics fetched', data });
+        } catch (error: any) {
+            res.status(500).json({ success: false, message: error.message });
+        }
+    },
 };
 
 

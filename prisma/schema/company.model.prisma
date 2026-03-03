@@ -8,8 +8,8 @@ model Company {
   size        CompanySize?
 
   // Relations
-  employer_id Int  @unique
-  employer    User @relation(fields: [employer_id], references: [id])
+  employer_id Int?
+  employer    User? @relation(fields: [employer_id], references: [id])
 
   location_id Int?
   location    Location? @relation(fields: [location_id], references: [id])

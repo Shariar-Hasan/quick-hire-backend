@@ -26,8 +26,8 @@ export const companyController = {
 
     getMyCompany: async (req: Request, res: Response) => {
         try {
-            const company = await companyService.findByEmployer(req.user!.id);
-            res.json({ success: true, message: 'Company fetched', data: company });
+            const companies = await companyService.findByEmployer(req.user!.id);
+            res.json({ success: true, message: 'Companies fetched', data: companies });
         } catch (error: any) {
             res.status(500).json({ success: false, message: error.message });
         }

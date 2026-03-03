@@ -12,12 +12,12 @@ import uploadRouter from "./modules/upload/upload.router";
 import categoryRouter from "./modules/category/category.router";
 
 dotenv.config();
-
+const origin = (process.env.ALLOW_ORIGIN || 'http://localhost:3004').split(',').map(o => o.trim());
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    origin: origin,
     credentials: true,
 }));
 app.use(express.json());

@@ -8,7 +8,7 @@ model User {
 
   // Relations
   jobs    Job[]
-  company Company?
+  companies Company[]
 
   // Audit
   created_at DateTime  @default(now())

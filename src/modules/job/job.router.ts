@@ -10,6 +10,7 @@ const router = Router();
 
 // Static routes first (before /:id)
 router.get('/with-count', authMiddleware, jobController.findAllWithAppliedCount);
+router.get('/analytics', authMiddleware, jobController.getAnalytics);
 router.get('/slug/:jobId', jobController.findByJobId);
 
 // Public

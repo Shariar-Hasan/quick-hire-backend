@@ -14,7 +14,7 @@ export const applicationService = {
                 skip,
                 take: Number(limit),
                 orderBy: { applied_at: 'desc' },
-                include: { job: { select: { id: true, title: true, job_id: true } } },
+                include: { job: { select: { id: true, title: true, job_id: true, job_type: true, remote_type: true } } },
             }),
             prisma.application.count({ where }),
         ]);

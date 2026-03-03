@@ -39,18 +39,24 @@ export const jobService = {
     },
 
     findAllWithAppliedCount: async (query: Record<string, any> = {}) => {
-        const { page = 1, limit = 10 } = query;
+        const { page = 1, limit = 10, search, company_id, location_id, status } = query;
         const skip = (Number(page) - 1) * Number(limit);
+
+        const where: Prisma.JobWhereInput = { deleted_at: null };
+        if (search) where.title = { contains: search, mode: 'insensitive' };
+        if (status) where.status = status;
+        if (company_id) where.company_id = Number(company_id);
+        if (location_id) where.location_id = Number(location_id);
 
         const [data, total] = await Promise.all([
             prisma.job.findMany({
-                where: { deleted_at: null },
+                where,
                 skip,
                 take: Number(limit),
                 orderBy: { created_at: 'desc' },
                 include: { _count: { select: { applications: true } }, company: true, location: true, category: true },
             }),
-            prisma.job.count({ where: { deleted_at: null } }),
+            prisma.job.count({ where }),
         ]);
 
         return {
@@ -93,5 +99,64 @@ export const jobService = {
 
     remove: async (id: number) => {
         return prisma.job.update({ where: { id }, data: { deleted_at: new Date() } });
+    },
+
+    getAnalytics: async () => {
+        const [
+            totalJobs,
+            publishedJobs,
+            draftJobs,
+            closedJobs,
+            totalApplications,
+            appliedCount,
+            shortlistedCount,
+            rejectedCount,
+            hiredCount,
+            recentApplications,
+            topJobs,
+        ] = await Promise.all([
+            prisma.job.count({ where: { deleted_at: null } }),
+            prisma.job.count({ where: { deleted_at: null, status: 'PUBLISHED' } }),
+            prisma.job.count({ where: { deleted_at: null, status: 'DRAFT' } }),
+            prisma.job.count({ where: { deleted_at: null, status: 'CLOSED' } }),
+            prisma.application.count({}),
+            prisma.application.count({ where: { status: 'APPLIED' } }),
+            prisma.application.count({ where: { status: 'SHORTLISTED' } }),
+            prisma.application.count({ where: { status: 'REJECTED' } }),
+            prisma.application.count({ where: { status: 'HIRED' } }),
+            prisma.application.findMany({
+                orderBy: { applied_at: 'desc' },
+                take: 6,
+                include: {
+                    job: { select: { id: true, title: true, job_id: true, job_type: true } },
+                },
+            }),
+            prisma.job.findMany({
+                where: { deleted_at: null },
+                orderBy: { applications: { _count: 'desc' } },
+                take: 5,
+                select: {
+                    id: true,
+                    title: true,
+                    job_id: true,
+                    status: true,
+                    company: { select: { name: true } },
+                    _count: { select: { applications: true } },
+                },
+            }),
+        ]);
+
+        return {
+            jobs: { total: totalJobs, published: publishedJobs, draft: draftJobs, closed: closedJobs },
+            applications: {
+                total: totalApplications,
+                applied: appliedCount,
+                shortlisted: shortlistedCount,
+                rejected: rejectedCount,
+                hired: hiredCount,
+            },
+            recentApplications,
+            topJobs: topJobs.map(j => ({ ...j, applications_count: j._count.applications })),
+        };
     },
 };
