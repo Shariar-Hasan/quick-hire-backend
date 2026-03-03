@@ -3,7 +3,7 @@ import prisma from '../../lib/db';
 
 export const jobService = {
     findAll: async (query: Record<string, any> = {}) => {
-        const { page = 1, limit = 10, search, status, job_type, remote_type } = query;
+        const { page = 1, limit = 10, search, status, job_type, remote_type, location_id, category_id } = query;
         const skip = (Number(page) - 1) * Number(limit);
 
         const where: Prisma.JobWhereInput = {
@@ -13,6 +13,8 @@ export const jobService = {
         if (status) where.status = status;
         if (job_type) where.job_type = job_type;
         if (remote_type) where.remote_type = remote_type;
+        if (location_id) where.location_id = Number(location_id);
+        if (category_id) where.category_id = Number(category_id);
 
         const [data, total] = await Promise.all([
             prisma.job.findMany({
@@ -20,7 +22,12 @@ export const jobService = {
                 skip,
                 take: Number(limit),
                 orderBy: { created_at: 'desc' },
-                include: { employer: { select: { id: true, name: true, email: true } } },
+                include: {
+                    employer: { select: { id: true, name: true, email: true } },
+                    company: true,
+                    location: true,
+                    category: true,
+                },
             }),
             prisma.job.count({ where }),
         ]);
@@ -41,7 +48,7 @@ export const jobService = {
                 skip,
                 take: Number(limit),
                 orderBy: { created_at: 'desc' },
-                include: { _count: { select: { applications: true } }, company: true, location: true },
+                include: { _count: { select: { applications: true } }, company: true, location: true, category: true },
             }),
             prisma.job.count({ where: { deleted_at: null } }),
         ]);
@@ -55,14 +62,14 @@ export const jobService = {
     findOne: async (id: number) => {
         return prisma.job.findUnique({
             where: { id, deleted_at: null },
-            include: { employer: { select: { id: true, name: true, email: true } }, company: true },
+            include: { employer: { select: { id: true, name: true, email: true } }, company: true, location: true, category: true },
         });
     },
 
     findByJobId: async (jobId: string) => {
         return prisma.job.findUnique({
             where: { job_id: jobId, deleted_at: null },
-            include: { employer: { select: { id: true, name: true, email: true } }, company: true },
+            include: { employer: { select: { id: true, name: true, email: true } }, company: true, location: true, category: true },
         });
     },
 
@@ -71,7 +78,7 @@ export const jobService = {
     },
 
     update: async (id: number, data: any) => {
-        const { company_id, location_id, employer_id, ...rest } = data;
+        const { company_id, location_id, employer_id, category_id, ...rest } = data;
         return prisma.job.update({
             where: { id },
             data: {
@@ -79,6 +86,7 @@ export const jobService = {
                 ...(company_id != null && { company: { connect: { id: company_id } } }),
                 ...(location_id != null && { location: { connect: { id: location_id } } }),
                 ...(employer_id != null && { employer: { connect: { id: employer_id } } }),
+                ...(category_id != null && { category: { connect: { id: category_id } } }),
             },
         });
     },

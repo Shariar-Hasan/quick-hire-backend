@@ -14,15 +14,27 @@ export const createJobSchema = z
 
         company_id: z.coerce.number().int().positive().optional(),
         location_id: z.coerce.number().int().positive().optional(),
+        category_id: z.coerce.number().int().positive().optional(),
 
         salary_min: z.coerce.number().positive().optional(),
         salary_max: z.coerce.number().positive().optional(),
         currency: z.string().optional(),
 
+        tags: z.array(z.string()).default([]),
+
         is_featured: z.coerce.boolean().optional().default(false),
         expires_at: z.coerce.date().optional(),
     })
     .refine(
+        (d) =>
+            d.salary_min == null ||
+            d.salary_max == null ||
+            d.salary_max >= d.salary_min,
+        { message: 'salary_max must be >= salary_min', path: ['salary_max'] }
+    );
+
+export type CreateJobDto = z.infer<typeof createJobSchema>;
+
         (d) =>
             d.salary_min == null ||
             d.salary_max == null ||

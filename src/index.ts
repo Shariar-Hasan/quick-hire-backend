@@ -9,6 +9,7 @@ import companyRouter from "./modules/company/company.router";
 import jobRouter from "./modules/job/job.router";
 import applicationRouter from "./modules/application/application.router";
 import uploadRouter from "./modules/upload/upload.router";
+import categoryRouter from "./modules/category/category.router";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use("/api/company", companyRouter);
 app.use("/api/job", jobRouter);
 app.use("/api/application", applicationRouter);
 app.use("/api/upload", uploadRouter);
+app.use("/api/category", categoryRouter);
 
 // ── Start ───────────────────────────────────────
 app.listen(PORT, () => {

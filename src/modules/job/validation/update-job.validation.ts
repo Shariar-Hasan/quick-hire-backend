@@ -13,10 +13,13 @@ export const updateJobSchema = z.object({
 
     company_id: z.coerce.number().int().positive().optional(),
     location_id: z.coerce.number().int().positive().optional(),
+    category_id: z.coerce.number().int().positive().optional(),
 
     salary_min: z.coerce.number().positive().optional(),
     salary_max: z.coerce.number().positive().optional(),
     currency: z.string().optional(),
+
+    tags: z.array(z.string()).optional(),
 
     is_featured: z.coerce.boolean().optional(),
     expires_at: z.coerce.date().optional(),
