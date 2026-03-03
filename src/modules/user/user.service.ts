@@ -39,7 +39,7 @@ export const userService = {
     getMyProfile: async (userId: number) => {
         return prisma.user.findUnique({
             where: { id: userId },
-            include: { company: true },
+            include: { companies: true },
         });
     },
 };
