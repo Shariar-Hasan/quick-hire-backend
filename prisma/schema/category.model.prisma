@@ -3,6 +3,8 @@ model Category {
   name        String  @unique
   description String?
   slug        String  @unique
+  logo_url    String?
+  is_featured Boolean @default(false)
 
   jobs Job[]
 

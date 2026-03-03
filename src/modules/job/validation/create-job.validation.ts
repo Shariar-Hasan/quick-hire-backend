@@ -34,12 +34,3 @@ export const createJobSchema = z
     );
 
 export type CreateJobDto = z.infer<typeof createJobSchema>;
-
-        (d) =>
-            d.salary_min == null ||
-            d.salary_max == null ||
-            d.salary_max >= d.salary_min,
-        { message: 'salary_max must be >= salary_min', path: ['salary_max'] }
-    );
-
-export type CreateJobDto = z.infer<typeof createJobSchema>;
